@@ -15,7 +15,22 @@ class Store {
 
   getNotes() {
     return this.read().then((notes) => {
-        return JSON.parse(notes)
+      return JSON.parse(notes);
+    });
+  }
+
+  writeNote(note) {
+    if (!note.title || !note.text) {
+      throw new Error("cannot be blank");
+    }
+    note.id = generateId();
+
+    return this.getNotes().then((notes)=>{
+        return [...notes, note]
+    }).then((arrNotes)=>{
+        return this.write(arrNotes);
+    }).then(()=>{
+        return note
     })
   }
 }
