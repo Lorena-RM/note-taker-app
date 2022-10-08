@@ -25,12 +25,25 @@ class Store {
     }
     note.id = generateId();
 
-    return this.getNotes().then((notes)=>{
-        return [...notes, note]
-    }).then((arrNotes)=>{
+    return this.getNotes()
+      .then((notes) => {
+        return [...notes, note];
+      })
+      .then((arrNotes) => {
         return this.write(arrNotes);
-    }).then(()=>{
-        return note
+      })
+      .then(() => {
+        return note;
+      });
+  }
+
+  deleteNote(id) {
+    return this.getNotes().then((notes) => {
+      return notes.filter((note) => {
+        return note.id !== id;
+      });
+    }).then((keptNotes)=>{
+        return this.write(keptNotes);
     })
   }
 }
